@@ -33,3 +33,9 @@ Steps to start hadoop and hbase:
 Caveat:
   1. Hbase shutdown with error: Timedout 300000ms waiting for namespace table to be assigned
      - Solution: hbase org.apache.hadoop.hbase.util.hbck.OfflineMetaRepair
+  2. Add hadoop datanode on running
+     - Start new container using dongqing/hadoop:1.0.0
+     - In new container, input 
+        /usr/local/hadoop/sbin/hadoop-daemon.sh start datanode
+        /usr/local/hadoop/sbin/yarn-daemon.sh start nodemanager
+        /usr/local/hadoop/sbin/start-balancer.sh
