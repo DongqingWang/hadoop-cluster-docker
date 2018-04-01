@@ -39,3 +39,7 @@ Caveat:
         /usr/local/hadoop/sbin/hadoop-daemon.sh start datanode
         /usr/local/hadoop/sbin/yarn-daemon.sh start nodemanager
         /usr/local/hadoop/sbin/start-balancer.sh
+Next plan:
+  1. Use DNS for HBase instead of writing hosts file
+  2. Use alpine linux image instead of centos
+  2. use wget to download Hadoop, HBase and JDK
