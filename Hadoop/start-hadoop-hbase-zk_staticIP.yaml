@@ -1,7 +1,7 @@
 version: '3.4'
 services:
   hadoopslave1:
-    image: dongqing/hadoop-hbase
+    image: wangdongqing/hadoop-hbase
     container_name: hadoopslave1
     restart: 'no'
     hostname: hadoopslave1
@@ -18,7 +18,7 @@ services:
     tty: true
 
   hadoopslave2:
-    image: dongqing/hadoop-hbase
+    image: wangdongqing/hadoop-hbase
     container_name: hadoopslave2
     restart: 'no'
     hostname: hadoopslave2
@@ -35,7 +35,7 @@ services:
     tty: true
 
   hadoopstandby:
-    image: dongqing/hadoop-hbase
+    image: wangdongqing/hadoop-hbase
     container_name: hadoopstandby
     restart: 'no'
     hostname: hadoopstandby
@@ -49,7 +49,7 @@ services:
     tty: true
 
   hadoopmaster:
-    image: dongqing/hadoop-hbase
+    image: wangdongqing/hadoop-hbase
     container_name: hadoopmaster
     restart: 'no'
     hostname: hadoopmaster

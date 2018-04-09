@@ -2,15 +2,19 @@ FROM centos:6
 MAINTAINER Dongqing
 
 RUN yum -y update
-RUN yum install -y openssh-server openssh-clients sudo which initscripts
-
-ADD jdk-8u162-linux-x64.rpm /tmp
-RUN yum localinstall -y /tmp/jdk-8u162-linux-x64.rpm
+RUN yum install -y openssh-server openssh-clients sudo which initscripts wget java-1.8.0-openjdk
 
 RUN groupadd hadoop
 RUN useradd -m hadoop -g hadoop -p hadoop
 
-ADD hadoop-2.7.5.tar.gz /usr/local/
+ENV JAVA_HOME=/usr/lib/jvm/java-1.8.0-openjdk-1.8.0.161-3.b14.el6_9.x86_64
+
+ENV CLASSPATH=.:$JAVA_HOME/jre/lib/rt.jar:$JAVA_HOME/lib/dt.jar:$JAVA_HOME/lib/tools.jar
+
+ENV PATH=$PATH:$JAVA_HOME/bin
+
+RUN wget -c http://www-eu.apache.org/dist/hadoop/common/hadoop-2.7.5/hadoop-2.7.5.tar.gz -P /tmp
+RUN cd /usr/local/ && tar -zxvf /tmp/hadoop-2.7.5.tar.gz
 
 RUN chown -R hadoop:hadoop /usr/local/hadoop-2.7.5
 RUN cd /usr/local/ && ln -s ./hadoop-2.7.5 hadoop && rm -f ./hadoop-2.7.5.tar.gz
@@ -24,10 +28,11 @@ ENV HADOOP_YARN_HOME /usr/local/hadoop
 ENV HADOOP_CONF_DIR /usr/local/hadoop/etc/hadoop
 ENV PATH ${HADOOP_HOME}/bin:$PATH
 
-ADD hbase-1.2.6-bin.tar.gz /usr/local/
+RUN wget -c http://www-eu.apache.org/dist/hbase/stable/hbase-1.2.6-bin.tar.gz -P /tmp
+RUN cd /usr/local/ && tar -zxvf /tmp/hbase-1.2.6-bin.tar.gz
 
 RUN chown -R hadoop:hadoop /usr/local/hbase-1.2.6
-RUN cd /usr/local/ && ln -s ./hbase-1.2.6 hbase && rm -f ./hbase-1.2.6-bin.tar.gz && ls
+RUN cd /usr/local/ && ln -s ./hbase-1.2.6 hbase && rm -f ./hbase-1.2.6-bin.tar.gz
 
 ENV HBASE_HOME /usr/local/hbase
 ENV PATH ${HBASE_HOME}/bin:$PATH
