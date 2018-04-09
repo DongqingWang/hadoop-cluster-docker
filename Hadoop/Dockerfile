@@ -7,9 +7,9 @@ RUN yum install -y openssh-server openssh-clients sudo which initscripts wget ja
 RUN groupadd hadoop
 RUN useradd -m hadoop -g hadoop -p hadoop
 
-ENV JAVA_HOME=/usr/lib/jvm/java-1.8.0-openjdk-1.8.0.161-3.b14.el6_9.x86_64
+ENV JAVA_HOME=/usr/lib/jvm/jre
 
-ENV CLASSPATH=.:$JAVA_HOME/jre/lib/rt.jar:$JAVA_HOME/lib/dt.jar:$JAVA_HOME/lib/tools.jar
+ENV CLASSPATH=.:$JAVA_HOME/lib/rt.jar
 
 ENV PATH=$PATH:$JAVA_HOME/bin
 
