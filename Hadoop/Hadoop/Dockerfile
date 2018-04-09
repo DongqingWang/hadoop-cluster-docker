@@ -1,4 +1,4 @@
-FROM dongqing/hadoop-base:1.0.0
+FROM wangdongqing/hadoop-base
 
 MAINTAINER Dongqing
 
