@@ -2,17 +2,17 @@ FROM wangdongqing/hadoop-base
 
 MAINTAINER Dongqing
 
-ADD Hadoop/hadoop-env.sh $HADOOP_HOME/etc/hadoop/
-ADD Hadoop/mapred-env.sh $HADOOP_HOME/etc/hadoop/
-ADD Hadoop/yarn-env.sh $HADOOP_HOME/etc/hadoop/
-ADD Hadoop/core-site.xml $HADOOP_HOME/etc/hadoop/
-ADD Hadoop/hdfs-site.xml $HADOOP_HOME/etc/hadoop/
-ADD Hadoop/mapred-site.xml $HADOOP_HOME/etc/hadoop/
-ADD Hadoop/yarn-site.xml $HADOOP_HOME/etc/hadoop/
-ADD Hadoop/slaves $HADOOP_HOME/etc/hadoop/
-ADD HBase/hbase-env.sh $HBASE_HOME/conf/
-ADD hadoop-hbase/hbase-site.xml $HBASE_HOME/conf/
-ADD hadoop-hbase/regionservers $HBASE_HOME/conf/
+ADD hadoop-env.sh $HADOOP_HOME/etc/hadoop/
+ADD mapred-env.sh $HADOOP_HOME/etc/hadoop/
+ADD yarn-env.sh $HADOOP_HOME/etc/hadoop/
+ADD core-site.xml $HADOOP_HOME/etc/hadoop/
+ADD hdfs-site.xml $HADOOP_HOME/etc/hadoop/
+ADD mapred-site.xml $HADOOP_HOME/etc/hadoop/
+ADD yarn-site.xml $HADOOP_HOME/etc/hadoop/
+ADD slaves $HADOOP_HOME/etc/hadoop/
+ADD hbase-env.sh $HBASE_HOME/conf/
+ADD hbase-site.xml $HBASE_HOME/conf/
+ADD regionservers $HBASE_HOME/conf/
 
 USER hadoop
 RUN sudo mkdir -p /opt/hadoop/data/zookeeper
