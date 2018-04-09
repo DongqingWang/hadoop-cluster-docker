@@ -1,1 +1,1 @@
-export JAVA_HOME=/usr/java/jdk1.8.0_162
+export JAVA_HOME=/usr/lib/jvm/jre
