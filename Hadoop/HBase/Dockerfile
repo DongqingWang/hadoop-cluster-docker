@@ -13,4 +13,4 @@ RUN sudo chown -R hadoop:hadoop /opt/hadoop
 RUN sudo chown -R hadoop:hadoop /home/hadoop
 
 
-CMD ["sh", "-c", "sudo service sshd start; bash"]
+CMD ["sh", "-c", "sudo service sshd start;bash"]

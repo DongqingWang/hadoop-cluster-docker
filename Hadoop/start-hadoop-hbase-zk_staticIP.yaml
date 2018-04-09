@@ -1,0 +1,124 @@
+version: '3.4'
+services:
+  hadoopslave1:
+    image: dongqing/hadoop-hbase
+    container_name: hadoopslave1
+    restart: 'no'
+    hostname: hadoopslave1
+    networks:
+      hadoop:
+        ipv4_address:  172.18.0.53
+    extra_hosts:
+      - "hadoopmaster: 172.18.0.50"
+      - "hadoopslave2: 172.18.0.52"
+    depends_on:
+      - zoo1
+      - zoo2
+      - zoo3
+    tty: true
+
+  hadoopslave2:
+    image: dongqing/hadoop-hbase
+    container_name: hadoopslave2
+    restart: 'no'
+    hostname: hadoopslave2
+    networks:
+      hadoop:
+        ipv4_address:  172.18.0.52
+    extra_hosts:
+      - "hadoopmaster: 172.18.0.50"
+      - "hadoopslave1: 172.18.0.53"
+    depends_on:
+      - zoo1
+      - zoo2
+      - zoo3
+    tty: true
+
+  hadoopstandby:
+    image: dongqing/hadoop-hbase
+    container_name: hadoopstandby
+    restart: 'no'
+    hostname: hadoopstandby
+    networks:
+      hadoop:
+        ipv4_address: 172.18.0.51
+    depends_on:
+      - zoo1
+      - zoo2
+      - zoo3
+    tty: true
+
+  hadoopmaster:
+    image: dongqing/hadoop-hbase
+    container_name: hadoopmaster
+    restart: 'no'
+    hostname: hadoopmaster
+    ports:
+      - 50070:50070
+      - 8088:8088
+      - 16010:16010
+    networks:
+      hadoop:
+        ipv4_address: 172.18.0.50
+    extra_hosts:
+      - "hadoopslave1: 172.18.0.53"
+      - "hadoopslave2: 172.18.0.52"
+    depends_on:
+      - hadoopslave1
+      - hadoopslave2
+      - hadoopstandby
+      - zoo1
+      - zoo2
+      - zoo3
+    tty: true
+    command: ["bash", "-c", "sudo service sshd start; /usr/local/hadoop/sbin/start-dfs.sh; /usr/local/hadoop/sbin/start-yarn.sh;start-hbase.sh;bash"]
+
+  zoo1:
+    image: zookeeper
+    container_name: zoo1
+    restart: always
+    hostname: zoo1
+    networks:
+      hadoop:
+        ipv4_address: 172.18.0.102
+    ports:
+      - 2181:2181
+    environment:
+      ZOO_MY_ID: 1
+      ZOO_SERVERS: server.1=0.0.0.0:2888:3888 server.2=zoo2:2888:3888 server.3=zoo3:2888:3888
+
+  zoo2:
+    image: zookeeper
+    container_name: zoo2
+    restart: always
+    hostname: zoo2
+    networks:
+      hadoop:
+        ipv4_address: 172.18.0.101
+    ports:
+      - 2182:2181
+    environment:
+      ZOO_MY_ID: 2
+      ZOO_SERVERS: server.1=zoo1:2888:3888 server.2=0.0.0.0:2888:3888 server.3=zoo3:2888:3888
+
+  zoo3:
+    image: zookeeper
+    container_name: zoo3
+    restart: always
+    hostname: zoo3
+    networks:
+      hadoop:
+        ipv4_address: 172.18.0.100
+    ports:
+      - 2183:2181
+    environment:
+      ZOO_MY_ID: 3
+      ZOO_SERVERS: server.1=zoo1:2888:3888 server.2=zoo2:2888:3888 server.3=0.0.0.0:2888:3888
+
+networks:
+  hadoop:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.18.0.0/16

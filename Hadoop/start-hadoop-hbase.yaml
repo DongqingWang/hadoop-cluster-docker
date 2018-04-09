@@ -1,0 +1,50 @@
+version: '3.4'
+services:
+  hadoopslave1:
+    image: dongqing/hadoop-hbase
+    container_name: hadoopslave1
+    restart: 'no'
+    hostname: hadoopslave1
+    networks:
+      - docker_hadoop
+    tty: true
+
+  hadoopslave2:
+    image: dongqing/hadoop-hbase
+    container_name: hadoopslave2
+    restart: 'no'
+    hostname: hadoopslave2
+    networks:
+      - docker_hadoop
+    tty: true
+
+  hadoopstandby:
+    image: dongqing/hadoop-hbase
+    container_name: hadoopstandby
+    restart: 'no'
+    hostname: hadoopstandby
+    networks:
+      - docker_hadoop
+    tty: true
+
+  hadoopmaster:
+    image: dongqing/hadoop-hbase
+    container_name: hadoopmaster
+    restart: 'no'
+    hostname: hadoopmaster
+    ports:
+      - 50070:50070
+      - 8088:8088
+      - 16010:16010
+    networks:
+      - docker_hadoop
+    links:
+      - hadoopslave1
+      - hadoopslave2
+      - hadoopstandby
+    tty: true
+    command: ["bash", "-c", "sudo service sshd start; /usr/local/hadoop/sbin/start-dfs.sh; /usr/local/hadoop/sbin/start-yarn.sh;start-hbase.sh;bash"]
+
+networks:
+  docker_hadoop:
+    external: true

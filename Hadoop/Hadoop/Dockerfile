@@ -19,4 +19,4 @@ RUN sudo chown -R hadoop:hadoop /home/hadoop
 
 RUN /usr/local/hadoop/bin/hdfs namenode -format
 
-CMD ["sh", "-c", "sudo service sshd start; bash"]
+CMD ["sh", "-c", "sudo service sshd start;bash"]

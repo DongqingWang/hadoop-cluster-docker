@@ -1,0 +1,82 @@
+version: '3.4'
+services:
+  hadoopslave1:
+    image: dongqing/hadoop:1.0.0
+    container_name: hadoopslave1
+    restart: 'no'
+    hostname: hadoopslave1
+    networks:
+      - docker_default
+
+  hadoopslave2:
+    image: dongqing/hadoop:1.0.0
+    container_name: hadoopslave2
+    restart: 'no'
+    hostname: hadoopslave2
+    networks:
+      - docker_default
+
+  hadoopstandby:
+    image: dongqing/hadoop:1.0.0
+    container_name: hadoopstandby
+    restart: 'no'
+    hostname: hadoopstandby
+    networks:
+      - docker_default
+
+  hadoopmaster:
+    image: dongqing/hadoop:1.0.0
+    container_name: hadoopmaster
+    restart: 'no'
+    hostname: hadoopmaster
+    ports:
+      - 50070:50070
+      - 8088:8088
+    networks:
+      - docker_default
+    links:
+      - hadoopslave1
+      - hadoopslave2
+      - hadoopstandby
+
+  hmaster:
+    image: dongqing/hbase:1.0.0
+    container_name: hmaster
+    restart: 'no'
+    hostname: hmaster
+    ports:
+      - 16010:16010
+    networks:
+      - docker_default
+    links:
+      - hadoopmaster
+      - hregionserver1
+      - hregionserver2
+    external_links:
+      - docker_zoo1_1
+      - docker_zoo2_1
+      - docker_zoo3_1
+
+  hregionserver1:
+    image: dongqing/hbase:1.0.0
+    container_name: hregionserver1
+    restart: 'no'
+    hostname: hregionserver1
+    networks:
+      - docker_default
+    links:
+      - hadoopmaster
+
+  hregionserver2:
+    image: dongqing/hbase:1.0.0
+    container_name: hregionserver2
+    restart: 'no'
+    hostname: hregionserver2
+    networks:
+      - docker_default
+    links:
+      - hadoopmaster
+
+networks:
+  docker_default:
+    external: true
